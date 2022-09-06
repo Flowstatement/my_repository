@@ -1,30 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <div id="root"></div>
-</body>
-<script crossorigin src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
-<script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-<script type="text/babel">
-    const root = document.getElementById("root");
-    const Title = () => <h3 id ="title" onMouseEnter={()=>console.log("mouse enter")}>Hello I'm a title</h3>
-    const Button = () => <button style={{backgroundColor: "tomato"}} onClick={()=> console.log("I'm clicked")}>Click me</button>
+  </body>
 
-    const Container = () => (
+  <script
+    crossorigin
+    src="https://unpkg.com/react@17/umd/react.production.min.js"
+  ></script>
+  <script
+    crossorigin
+    src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"
+  ></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    function MinutesHours() {
+      const [amount, setAmount] = React.useState();
+      //   const [hours, setHours] = React.useState("");
+      const [flipped, setFlipped] = React.useState(false);
+      const onChange = (event) => {
+        setAmount(event.target.value);
+        // console.log(event.target.value);
+      };
+      const reset = () => {
+        setAmount("");
+      };
+      const onFlip = () => {
+        setFlipped((current) => !current);
+        reset();
+      };
+      return (
         <div>
-        <Title />
-        <Button />
-        </div>)
-    ReactDOM.render(<Container />, root);
-</script>
+          <div>
+            <label htmlFor="minutes">Minutes</label>
+            <input
+              autoFocus
+              value={flipped ? amount * 60 : amount}
+              type="number"
+              placeholder="Minutes"
+              id="minutes"
+              onChange={onChange}
+              disabled={flipped}
+            />
+          </div>
+          <div>
+            <label htmlFor="hours">Hours</label>
+            <input
+              value={flipped ? amount : Math.round(amount / 60)}
+              type="number"
+              placeholder="Hours"
+              id="hours"
+              onChange={onChange}
+              disabled={!flipped}
+            />
+          </div>
+          <button onClick={reset}>Reset</button>
+          <button onClick={onFlip}>Flip</button>
+        </div>
+      );
+    }
+    function KmtoMiles() {
+      const [figure, setFigure] = React.useState();
+      const check_figure = (e) => {
+        setFigure(e.target.value);
+        console.log(e.target.value);
+      };
+      const [secondflip, setSecondflip] = React.useState(false);
+      const flip_on = () => {
+        setSecondflip((current) => !current);
+        reset_on();
+      };
+      const reset_on = () => {
+        setFigure(0);
+      };
+      return (
+        <div>
+          <h1>Km to Miles</h1>
+          <label for="" id="Km">
+            Km
+          </label>
+          <input
+            id="Km"
+            type="number"
+            placeholder="Km"
+            onChange={check_figure}
+            value={secondflip ? figure * 1.61 : figure}
+            disabled={secondflip}
+          />
+          <label for="" id="Miles">
+            Miles
+          </label>
+          <input
+            id="Miles"
+            type="number"
+            placeholder="Miles"
+            onChange={check_figure}
+            value={secondflip ? figure : figure * 0.62}
+            disabled={!secondflip}
+          />
+          <button onClick={reset_on}>reset</button>
+          <button onClick={flip_on}>flip</button>
+        </div>
+      );
+    }
+    function Choose_one_view() {
+      return (
+        <div>
+          <h1>choose one you want.</h1>
+        </div>
+      );
+    }
+    function App() {
+      const [option, setOption] = React.useState("choose_one");
+      const option_change = (event) => {
+        setOption(event.target.value);
+        console.log(event.target.value);
+      };
+      return (
+        <div>
+          <h1>Super converter</h1>
+          <select name="" id="" onChange={option_change}>
+            <option value="choose_one">Choose one you want</option>
+            <option value="minutes_to_hours">Minutes to Hours</option>
+            <option value="km_to_hours">Km to Miles</option>
+          </select>
+          <hr />
+          {option === "choose_one" ? <Choose_one_view /> : null}
+          {option === "minutes_to_hours" ? <MinutesHours /> : null}
+          {option === "km_to_hours" ? <KmtoMiles /> : null}
+        </div>
+      );
+    }
 
+    const root = document.getElementById("root");
+    ReactDOM.render(<App />, root);
+  </script>
 </html>
