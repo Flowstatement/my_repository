@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 function App() {
   const [todo_value, setTodo_value] = useState("");
   const write_something = (event) => setTodo_value(event.target.value);
-
   const [plan_array, setPlan_array] = useState([]);
   const add_plan = (e) => {
     e.preventDefault();
@@ -15,6 +14,10 @@ function App() {
     }
     console.log(plan_array);
   };
+  console.log(todo_value);
+  console.log(plan_array.map((item, index) => (
+    <li key={index}>{item}</li>
+  )));
   return (
     <div>
       <h1>Current Array: ({plan_array.length})</h1>
@@ -27,6 +30,12 @@ function App() {
         />
         <button>입력</button>
       </form>
+      <hr />
+      <ul>
+        {plan_array.map((item, index) => (
+          <li key={index}>{item}</li>
+        ))}
+      </ul>
     </div>
   );
 }
