@@ -1,0 +1,40 @@
+import { useEffect, useState } from "react";
+
+function App() {
+  const [loading, setLoading] = useState(true);
+  const [movie, setMovie] = useState([]);
+  const API_KEY =
+    "https://yts.mx/api/v2/list_movies.json?minimum_rating=8.8&sort_by=year";
+  useEffect(() => {
+    fetch(API_KEY)
+      .then((response) => response.json())
+      .then((json) => {
+        setMovie(json.data.movies);
+        setLoading(false);
+      });
+  }, []);
+  return (
+    <div>
+      {loading ? (
+        <h1>Loading...</h1>
+      ) : (
+        <div>
+          {movie.map((mv) => (
+            <div key={mv.id}>
+              <img src={mv.medium_cover_image} />
+              <h2>{mv.title}</h2>
+              <p>{mv.summary}</p>
+              <ul>
+                {mv.genres.map((gr, index) => (
+                  <li key={index}>{gr}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default App;
