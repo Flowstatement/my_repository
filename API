@@ -1,0 +1,62 @@
+import { useEffect, useState } from "react";
+
+function App() {
+  const [loading, setLoading] = useState(true);
+  const [coins, setCoins] = useState([]);
+  const API_KEY = "https://api.coinpaprika.com/v1/tickers";
+  useEffect(() => {
+    setLoading(false);
+    fetch(API_KEY).then((response) =>
+      response.json().then((json) => setCoins(json))
+    );
+  }, []);
+  const [dollar, setDollar] = useState("");
+  const conversion = (event) => setDollar(event.target.value);
+  // const make_conversion = () => {
+  //   return <h1>{dollar * 0.00005} USD </h1>;
+  // };
+  const form_prevent_default = (e) => e.preventDefault();
+  const [false_state, setFalse_state] = useState(false);
+  const true_false = () => setFalse_state((current) => !current);
+  return (
+    <div>
+      <h1>The coins: {loading ? "" : `(${coins.length})`}</h1>
+      <div>
+        <h3>dollar 변환기</h3>
+        <form onSubmit={form_prevent_default}>
+          <strong>$</strong>
+          <input
+            onChange={conversion}
+            value={dollar}
+            type="text"
+            placeholder="dollar를 입력하세요."
+            // disabled={false_state}
+          />
+          <span>dollar</span>
+          &nbsp;
+          <button onClick={true_false}>변환</button>
+          <h1>
+            {false_state
+              ? dollar * 0.00005
+              : "Please write a dollar. It will change to "}{" "}
+            BTC
+          </h1>
+          {/* <h1>{false_state ? dollar * 0.00005 : "Please write a dollar. It will change to "} BTC</h1> */}
+        </form>
+      </div>
+      {loading ? (
+        <strong>Loading...</strong>
+      ) : (
+        <select>
+          {coins.map((item) => (
+            <option key={item.id}>
+              {item.name}({item.symbol}) : ${item.quotes.USD.price}USD
+            </option>
+          ))}
+        </select>
+      )}
+    </div>
+  );
+}
+
+export default App;
