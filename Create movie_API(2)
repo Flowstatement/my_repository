@@ -1,0 +1,88 @@
+import Home from "./routes/Home";
+
+function App() {
+  return (
+    <div>
+      <Home />
+    </div>
+  )
+}
+
+export default App;
+
+import { useEffect, useState } from "react";
+import Movie from "../components/Movie";
+
+const Home = () => {
+  const [loading, setLoading] = useState(true);
+  const [movie, setMovie] = useState([]);
+  const API_KEY =
+    "https://yts.mx/api/v2/list_movies.json?minimum_rating=8.8&sort_by=year";
+  const getMovies = async () => {
+    const response = await fetch(API_KEY);
+    const json = await response.json();
+    setMovie(json.data.movies);
+    setLoading(false);
+  };
+  useEffect(() => {
+    getMovies();
+  }, []);
+  return (
+    <div>
+      {loading ? (
+        <h1>Loading...</h1>
+      ) : (
+        <div>
+          <h1>Movie count: {movie.length}</h1>
+          <hr />
+          {movie.map((mv) => (
+            <Movie
+              key={mv.id}
+              coverImg={mv.medium_cover_image}
+              title={mv.title}
+              summary={mv.summary}
+              genre={mv.genres}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Home;
+
+import PropTypes from "prop-types";
+
+function Movie({ coverImg, title, summary, genre }) {
+  return (
+    <div>
+      <div>
+        <img src={coverImg} alt={title} />
+        <h2>{title}</h2>
+        <p>{summary}</p>
+        <ul>
+          {genre.map((gr) => (
+            <li key={gr}>{gr}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+
+Movie.propTypes = {
+  coverImg: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  summary: PropTypes.string.isRequired,
+  genre: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
+
+export default Movie;
+
+const Detail = () => {
+    return <h1>Detail</h1>
+}
+
+export default Detail;
