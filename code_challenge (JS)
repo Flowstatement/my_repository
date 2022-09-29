@@ -1,0 +1,51 @@
+  <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1 id="on_change">Hello!</h1>
+</body>
+<script>
+    const change_word = document.querySelector("#on_change");
+    const colors = ["green", "blue", "purple", "orange"];
+    const superEventHandler = {
+        title_here: function () {
+            change_word.innerHTML = "The mouse is here!"
+            change_word.style.color = colors[0];
+        },
+        title_gone: function () {
+            change_word.innerHTML = "The mouse is gone!"
+            change_word.style.color = colors[1];
+        },
+        title_resize: function () {
+            change_word.innerHTML = "You juse resized!"
+            change_word.style.color = colors[2];;
+        },
+        title_click: function (e) {
+            let x = e.button;
+            if (e.button == 0) { // I just tested e.button which is 'x';
+                change_word.innerHTML = `You click the left mouse button!`
+                change_word.style.color = colors[3];
+            } else if (x == 1) {
+                change_word.innerHTML = `You click the middile mouse button!`
+                change_word.style.color = colors[3];
+            } else if (x == 2) {
+                change_word.innerHTML = `You click the right mouse button!`
+                change_word.style.color = colors[3];
+            }
+        }
+    };
+
+    change_word.addEventListener("mouseenter", superEventHandler.title_here);
+    change_word.addEventListener("mouseleave", superEventHandler.title_gone);
+    window.addEventListener("resize", superEventHandler.title_resize);
+    window.addEventListener("mouseup", superEventHandler.title_click);
+</script>
+
+</html>
